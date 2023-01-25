@@ -74,14 +74,14 @@ resource "aws_security_group" "instance" {
   name   = "shh"
   vpc_id = aws_vpc.main.id
 
-  ingress {//shh
+  ingress { //shh
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress {//http
+  ingress { //http
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -115,6 +115,7 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+
 resource "aws_instance" "main" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t2.micro"
@@ -122,18 +123,10 @@ resource "aws_instance" "main" {
   vpc_security_group_ids      = [aws_security_group.open_door.id]
   key_name                    = "main_key"
   associate_public_ip_address = true
-
-
-  connection {
-    type        = "ssh"
-    host        = self.public_ip
-    user        = "ubuntu"
-    private_key = file("main_key")
-  }
-  user_data                   = file("web.sh")
-
+  user_data                   = file("user_data.sh")
 
   tags = {
     Name = "HelloWorld"
   }
+
 }
