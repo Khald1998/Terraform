@@ -130,3 +130,37 @@ resource "aws_instance" "main" {
   }
 
 }
+# ########
+# lambda 
+# ########
+
+
+resource "aws_lambda_function" "main" {
+  function_name = "go_func"
+  filename         = data.archive_file.go.output_path
+  source_code_hash = data.archive_file.go.output_base64sha256
+  role    = aws_iam_role.role_for_lambda.arn
+  handler = "main"
+  runtime = "go1.x"
+    environment {
+    variables = {
+      rds_password = aws_db_instance.main.password
+      rds_username = aws_db_instance.main.username
+      rds_port = aws_db_instance.main.port
+      rds_endpoint = aws_db_instance.main.address
+      rds_db_name = aws_db_instance.main.db_name
+
+    }
+  }
+}
+
+resource "aws_iam_role" "role_for_lambda" {
+    name               = "Our_iam_role_for_lambda"
+    assume_role_policy = data.aws_iam_policy_document.role.json
+}
+
+resource "aws_iam_role_policy" "lambda_policy" {
+    name = "Our_lambda_policy"
+    role = aws_iam_role.role_for_lambda.id
+    policy = data.aws_iam_policy_document.policy_for_lambda.json
+}
