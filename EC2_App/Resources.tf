@@ -1,6 +1,9 @@
 data "archive_file" "go" {
-    type = "zip"
-    source_dir  = "./Go-Functions/myLmbda"
-    output_path = "./Go-Functions/myLmbda.zip"
+  depends_on = [
+    null_resource.main
+  ]
+  type        = "zip"
+  source_dir  = "./func"
+  output_path = "./func.zip"
 }
 
