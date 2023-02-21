@@ -5,7 +5,7 @@ deploy app using git clone
 <code>https://github.com/Khald1998/Clone.git</code> <br>
 
 # Requirements
-private key in this case <code>main_key.pem</code>
+private key in my case <code>main_key.pem</code>
 
 
 
