@@ -123,12 +123,83 @@ resource "aws_instance" "main" {
   vpc_security_group_ids      = [aws_security_group.open_door.id]
   key_name                    = "main_key"
   associate_public_ip_address = true
-  user_data                   = file("user_data.sh")
+  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
+
+  user_data = <<EOF
+#!/bin/bash
+apt-get update
+apt-get install ca-certificates
+apt-get install curl
+apt-get install gnupg
+apt-get install lsb-release
+mkdir -m 0755 -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+apt-get update
+apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+echo ${data.aws_ecr_authorization_token.main.password} | docker login --username=${data.aws_ecr_authorization_token.main.user_name} --password-stdin ${aws_ecr_repository.main.repository_url}
+docker pull ${format("%v/%v:%v", local.ecr_address, var.repository_name, local.image_tag)}
+docker run -p 8080:8080 -d --restart always ${format("%v/%v:%v", local.ecr_address, var.repository_name, local.image_tag)}
+
+EOF                   
+  # = file("user_data.sh")
 
   tags = {
     Name = "HelloWorld"
   }
 
+}
+
+resource "aws_iam_role" "ec2_role" {
+  name = "ec2_role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow"
+    }
+  ]
+}
+EOF
+
+  tags = {
+    project = "ec2_role"
+  }
+}
+
+resource "aws_iam_instance_profile" "ec2_profile" {
+  name = "ec2_profile"
+  role = aws_iam_role.ec2_role.name
+}
+
+resource "aws_iam_role_policy" "ec2_policy" {
+  name = "ec2_policy"
+  role = aws_iam_role.ec2_role.id
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "ecr:GetAuthorizationToken",
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
 }
 
 # ########
@@ -154,25 +225,6 @@ resource "null_resource" "main" {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # ########
 # Docker 
 # ########
@@ -193,37 +245,37 @@ data "aws_ecr_authorization_token" "main" {
   # registry_id = aws_ecr_repository.main.registry_id
 }
 
-data aws_iam_policy_document ecr_policy {
-  statement {
-    effect = "Allow"
-    principals {
-      identifiers = ["*"]
-      type        = "*"
-    }
+# data aws_iam_policy_document ecr_policy {
+#   statement {
+#     effect = "Allow"
+#     principals {
+#       identifiers = ["*"]
+#       type        = "*"
+#     }
 
-    actions = [
-      "ecr:GetDownloadUrlForLayer",
-      "ecr:BatchGetImage",
-      "ecr:BatchCheckLayerAvailability",
-      "ecr:PutImage",
-      "ecr:InitiateLayerUpload",
-      "ecr:UploadLayerPart",
-      "ecr:CompleteLayerUpload",
-      "ecr:DescribeRepositories",
-      "ecr:GetRepositoryPolicy",
-      "ecr:ListImages",
-      "ecr:DeleteRepository",
-      "ecr:BatchDeleteImage",
-      "ecr:SetRepositoryPolicy",
-      "ecr:DeleteRepositoryPolicy"
-    ]
-  }
-}
+#     actions = [
+#       "ecr:GetDownloadUrlForLayer",
+#       "ecr:BatchGetImage",
+#       "ecr:BatchCheckLayerAvailability",
+#       "ecr:PutImage",
+#       "ecr:InitiateLayerUpload",
+#       "ecr:UploadLayerPart",
+#       "ecr:CompleteLayerUpload",
+#       "ecr:DescribeRepositories",
+#       "ecr:GetRepositoryPolicy",
+#       "ecr:ListImages",
+#       "ecr:DeleteRepository",
+#       "ecr:BatchDeleteImage",
+#       "ecr:SetRepositoryPolicy",
+#       "ecr:DeleteRepositoryPolicy"
+#     ]
+#   }
+# }
 
-resource aws_ecr_repository_policy main {
-  repository = aws_ecr_repository.main.name
-  policy = data.aws_iam_policy_document.ecr_policy.json
-}
+# resource aws_ecr_repository_policy main {
+#   repository = aws_ecr_repository.main.name
+#   policy = data.aws_iam_policy_document.ecr_policy.json
+# }
 
 
 
