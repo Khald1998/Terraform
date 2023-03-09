@@ -22,11 +22,11 @@ be sure to use the ip given + port
 docker provide is broken
 
 # References
-https://github.com/e2eSolutionArchitect/scripts/blob/main/docker/install-docker-ubuntu.md
-https://www.terraform.io/
-https://aws.amazon.com/
-https://www.docker.com/
-https://aws.amazon.com/ecr/
+https://github.com/e2eSolutionArchitect/scripts/blob/main/docker/install-docker-ubuntu.md <br>
+https://www.terraform.io/<br>
+https://aws.amazon.com/<br>
+https://www.docker.com/<br>
+https://aws.amazon.com/ecr/<br>
 
 # OpenWeatherMap Web App
 This is a simple web application that uses the OpenWeatherMap API to display weather information for a given city. The user can either search for a specific city or generate a random city to display weather information for.
