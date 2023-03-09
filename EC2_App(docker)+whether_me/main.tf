@@ -144,7 +144,6 @@ docker pull ${format("%v/%v:%v", local.ecr_address, var.repository_name, local.i
 docker run -p 8080:8080 -d --restart always ${format("%v/%v:%v", local.ecr_address, var.repository_name, local.image_tag)}
 
 EOF                   
-  # = file("user_data.sh")
 
   tags = {
     Name = "HelloWorld"
@@ -242,42 +241,7 @@ resource "aws_ecr_repository" "main" {
 }
 
 data "aws_ecr_authorization_token" "main" {
-  # registry_id = aws_ecr_repository.main.registry_id
 }
-
-# data aws_iam_policy_document ecr_policy {
-#   statement {
-#     effect = "Allow"
-#     principals {
-#       identifiers = ["*"]
-#       type        = "*"
-#     }
-
-#     actions = [
-#       "ecr:GetDownloadUrlForLayer",
-#       "ecr:BatchGetImage",
-#       "ecr:BatchCheckLayerAvailability",
-#       "ecr:PutImage",
-#       "ecr:InitiateLayerUpload",
-#       "ecr:UploadLayerPart",
-#       "ecr:CompleteLayerUpload",
-#       "ecr:DescribeRepositories",
-#       "ecr:GetRepositoryPolicy",
-#       "ecr:ListImages",
-#       "ecr:DeleteRepository",
-#       "ecr:BatchDeleteImage",
-#       "ecr:SetRepositoryPolicy",
-#       "ecr:DeleteRepositoryPolicy"
-#     ]
-#   }
-# }
-
-# resource aws_ecr_repository_policy main {
-#   repository = aws_ecr_repository.main.name
-#   policy = data.aws_iam_policy_document.ecr_policy.json
-# }
-
-
 
 provider "docker" {
   registry_auth {
@@ -297,24 +261,7 @@ resource "docker_registry_image" "helloworld" {
     no_cache   = true
   }
 
-  # depends_on = [
-  #   docker_image.image
-  # ]
+
 }
 
-# resource "docker_image" "image" {
-#   name = "test:${local.image_tag}"
 
-
-#   build {
-#     context    = "${path.module}/Dockerize_me/."
-#     dockerfile = "Dockerfile"
-#     no_cache   = true
-#   }
-#   depends_on = [aws_ecr_repository.main]
-# }
-
-# ########
-# EIP 
-# ########
-# resource block for eip #
