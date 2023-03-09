@@ -46,8 +46,8 @@ The application is built using Go and the Gin web framework. It uses the followi
 # Routes
 The application has the following routes:
 
-GET /: Displays the home page.
-GET /Search: Displays the search page.
-POST /Results: Displays the weather information for the searched or randomly generated city.
+GET /: Displays the home page.<br>
+GET /Search: Displays the search page.<br>
+POST /Results: Displays the weather information for the searched or randomly generated city.<br>
 
 
