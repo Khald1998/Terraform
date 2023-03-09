@@ -27,7 +27,3 @@ output "password" {
 output "image_name" {
   value = format("%v/%v:%v", local.ecr_address, var.repository_name, local.image_tag)
 }
-# output "image_tag" {
-#   value = replace(docker_image.image.name, "test:", "")
-# }
-

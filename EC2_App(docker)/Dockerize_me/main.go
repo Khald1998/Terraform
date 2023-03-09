@@ -96,30 +96,6 @@ func getEventsByID(c *gin.Context) {
 	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "event not found"})
 }
 
-// func updateEvent(c *gin.Context) {
-// 	ID := c.Query("ID")
-// 	eventID, _ := strconv.Atoi(ID)
-// 	var updatedEvent event
-
-// 	reqBody, err := ioutil.ReadAll(c.Request.Body)
-// 	if err != nil {
-// 		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Kindly enter data with the event only in order to update"})
-// 	}
-// 	json.Unmarshal(reqBody, &updatedEvent)
-
-// 	for i, singleEvent := range events {
-// 		if singleEvent.ID == eventID {
-// 			singleEvent.ID = updatedEvent.ID
-// 			singleEvent.X = updatedEvent.X
-// 			singleEvent.Y = updatedEvent.Y
-// 			singleEvent.RES = updatedEvent.Y + updatedEvent.X
-
-// 			events = append(events[:i], singleEvent)
-// 			c.IndentedJSON(http.StatusCreated, singleEvent)
-// 		}
-// 	}
-// }
-
 func updateEvent(c *gin.Context) {
 
 	var isThere bool = false

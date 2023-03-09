@@ -16,7 +16,7 @@ const (
 	contentTypeHTML = "./site/*"                                        // Path to HTML templates directory
 	openWeatherAPI  = "https://api.openweathermap.org/data/2.5/weather" // OpenWeather API URL
 	apiKey          = "51c242b3396833f6078589fc5411066e"                // API key for OpenWeather API
-	addr            = "localhost:8080"                                  // Server address
+	addr            = ":8080"                                           // Server address
 )
 
 // Setup the Gin router with necessary routes and middleware

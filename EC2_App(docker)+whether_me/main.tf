@@ -313,3 +313,8 @@ resource "docker_registry_image" "helloworld" {
 #   }
 #   depends_on = [aws_ecr_repository.main]
 # }
+
+# ########
+# EIP 
+# ########
+# resource block for eip #

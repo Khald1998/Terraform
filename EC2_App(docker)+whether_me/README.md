@@ -8,7 +8,7 @@ private key in my case <code>main_key.pem</code><br><code>go get -u github.com/g
 # The app
 <a>https://github.com/Khald1998/Clone</a>
 port:<code>8080</code>
-
+be sure to use the ip given + port
 # issue 
 docker provide is broken
 
