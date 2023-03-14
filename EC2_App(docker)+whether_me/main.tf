@@ -7,7 +7,7 @@ resource "aws_vpc" "main" {
   enable_dns_support   = true
 
   tags = {
-    Name = "main VPC"
+    Name = var.vpc_name
   }
 }
 # ########
@@ -50,25 +50,7 @@ resource "aws_route_table_association" "main" {
 # ########
 # security group 
 # ########
-resource "aws_security_group" "open_door" {
-  name   = "open door"
-  vpc_id = aws_vpc.main.id
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = -1
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = -1
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  tags = {
-    Name = "open door"
-  }
-}
+
 
 resource "aws_security_group" "instance" {
   name   = "shh"
@@ -81,9 +63,15 @@ resource "aws_security_group" "instance" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress { //http
+  ingress { 
     from_port   = 80
     to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+    ingress { 
+    from_port   = 8080
+    to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -120,10 +108,10 @@ resource "aws_instance" "main" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t2.micro"
   subnet_id                   = aws_subnet.public_1.id
-  vpc_security_group_ids      = [aws_security_group.open_door.id]
+  vpc_security_group_ids      = [aws_security_group.instance.id]
   key_name                    = "main_key"
   associate_public_ip_address = true
-  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
+  iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name
 
   user_data = <<EOF
 #!/bin/bash
@@ -146,7 +134,7 @@ docker run -p 8080:8080 -d --restart always ${format("%v/%v:%v", local.ecr_addre
 EOF                   
 
   tags = {
-    Name = "HelloWorld"
+    Name = "HelloWorld2"
   }
 
 }
@@ -251,8 +239,8 @@ provider "docker" {
   }
 }
 
-resource "docker_registry_image" "helloworld" {   
-  name          =local.ecr_image_name
+resource "docker_registry_image" "helloworld" {
+  name          = local.ecr_image_name
   keep_remotely = true
 
   build {

@@ -4,8 +4,8 @@ terraform {
       source = "hashicorp/aws"
     }
     docker = {
-      source = "kreuzwerker/docker"
-      version = ">= 2.12, < 3.0"
+      source  = "kreuzwerker/docker"
+      version = ">= 2.12, < 3.0" //docker latest version is broken
     }
   }
 }
