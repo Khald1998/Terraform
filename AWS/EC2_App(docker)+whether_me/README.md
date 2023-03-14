@@ -2,7 +2,12 @@
 This Terraform code provisions a basic AWS infrastructure including a VPC, internet gateway, subnet, security groups, and EC2 instances. The instances are configured with Docker, and the user data includes a script that pulls a Docker image from an AWS ECR repository and runs it.
 
 # Prerequisites and Requirements
-private key in my case <code>main_key.pem</code><br><code>go get -u github.com/gin-gonic/gin</code>
+private key in my case <code>main_key.pem</code>
+<br><code>go get -u github.com/gin-gonic/gin</code>
+<br><code>go get -u github.com/Pallinder/go-randomdata</code>
+<br><code>go get -u github.com/gin-contrib/static</code>
+<br><code>go get -u github.com/tidwall/gjson</code>
+<br>
 and
 <ul>
   <li>An AWS account with appropriate permissions</li>
