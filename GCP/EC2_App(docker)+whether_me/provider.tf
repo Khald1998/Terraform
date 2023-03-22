@@ -1,12 +1,14 @@
 terraform {
   required_providers {
-    google = {
-      source = "hashicorp/google"
+    aws = {
+      source = "hashicorp/aws"
+    }
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = ">= 2.12, < 3.0" //docker latest version is broken
     }
   }
 }
-
-provider "google" {
-  region  = var.gcp_region
-  project = var.gcp_project
+provider "aws" {
+  region = "us-east-1"
 }
