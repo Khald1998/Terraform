@@ -7,7 +7,7 @@ variable "gcp_region" {
 variable "gcp_project" {
   type        = string
   description = "Project to use for this config"
-  default = "terraform-31308"
+  default     = "terraform-31308"
 }
 variable "vpc_name" {
   type    = string
