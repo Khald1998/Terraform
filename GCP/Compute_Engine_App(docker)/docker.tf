@@ -14,6 +14,7 @@ resource "docker_image" "main" {
 
 resource "docker_registry_image" "main" {
   name          = docker_image.main.name
+  keep_remotely = true
   depends_on = [
     google_project_service.gcr_api
   ]
