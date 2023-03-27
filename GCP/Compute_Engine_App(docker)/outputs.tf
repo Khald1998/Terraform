@@ -5,3 +5,7 @@
 output "image_name" {
   value = docker_image.main.name
 }
+
+output "email" {
+  value = google_compute_instance.main.service_account[0].email
+}

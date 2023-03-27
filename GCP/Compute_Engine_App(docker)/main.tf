@@ -55,7 +55,7 @@ resource "google_compute_instance" "main" {
     google-container-registry-email = "anyvalue"
   }
 
-    service_account {
+  service_account {
     email  = "491123340090-compute@developer.gserviceaccount.com"
     scopes = ["cloud-platform"]
   }

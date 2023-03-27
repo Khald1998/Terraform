@@ -7,6 +7,14 @@ resource "docker_image" "main" {
     dockerfile = "Dockerfile"
     no_cache   = true
   }
-
+  depends_on = [
+    google_project_service.gcr_api
+  ]
 }
 
+resource "docker_registry_image" "main" {
+  name          = docker_image.main.name
+  depends_on = [
+    google_project_service.gcr_api
+  ]
+}

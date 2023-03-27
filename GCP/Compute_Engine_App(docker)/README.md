@@ -1,0 +1,1 @@
+terraform apply -auto-approve -target="google_project_iam_binding.Service_Account_Token_Creator"
