@@ -55,10 +55,10 @@ resource "google_compute_instance" "main" {
     google-container-registry-email = "anyvalue"
   }
 
-  service_account {
-    email  = "491123340090-compute@developer.gserviceaccount.com"
-    scopes = ["cloud-platform"]
-  }
+  # service_account {
+  #   email  = "491123340090-compute@developer.gserviceaccount.com"
+  #   scopes = ["cloud-platform"]
+  # }
 
   # Add a startup script to run when the instance boots
   metadata_startup_script = file("data.sh")
