@@ -53,6 +53,9 @@ resource "google_compute_instance" "main" {
     google-container-registry-password = "${data.google_client_config.default.access_token}"
     google-container-registry-username = "_json_key"
     google-container-registry-email = "anyvalue"
+    docker-credential-helpers  = "gcr"
+    gcrio                    = "${google_service_account_key.registry_access.private_key}"
+
   }
 
   service_account {
@@ -64,6 +67,7 @@ resource "google_compute_instance" "main" {
   metadata_startup_script = file("data.sh")
   depends_on = [
     google_service_account.registry_access
+    ,google_service_account_key.registry_access
   ]
 }
 
