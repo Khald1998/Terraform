@@ -15,14 +15,14 @@ variable "vpc_name" {
   default = "main-vpc"
 }
 
-variable "user_email" {
-  type    = string
-  default = "alzahrani.khaled.98@gmail.com"
-}
-variable "service_account" {
-  type    = string
-  default = "491123340090-compute@developer.gserviceaccount.com"
-}
+# variable "user_email" {
+#   type    = string
+#   default = "alzahrani.khaled.98@gmail.com"
+# }
+# variable "service_account" {
+#   type    = string
+#   default = "491123340090-compute@developer.gserviceaccount.com"
+# }
 variable "image_name" {
   type    = string
   default = "test"
