@@ -1,7 +1,7 @@
 #!/bin/bash
 apt-get update
 apt-get install ca-certificates
-apt-get install curl
+apt-get install curl -y
 apt-get install gnupg
 apt-get install lsb-release
 mkdir -m 0755 -p /etc/apt/keyrings
