@@ -25,5 +25,5 @@ variable "image_name" {
   default = "test"
 }
 variable "ssh_user" {
-  default = "user"
+  default = "alzahrani_khaled_98"
 }

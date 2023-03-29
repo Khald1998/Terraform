@@ -70,7 +70,7 @@ resource "google_compute_instance" "main" {
   }
   provisioner "file" {
     source = "registry-access-key.json"
-    destination = "/home/user/service_account.json"
+    destination = "/home/${var.ssh_user}/service_account.json"
   }
   # Add a startup script to run when the instance boots
   metadata_startup_script = file("data.sh")
