@@ -62,7 +62,16 @@ resource "google_compute_instance" "main" {
     email  = google_service_account.registry_access.email
     scopes = ["cloud-platform"]
   }
-
+    connection {
+    type        = "ssh"
+    user        = "${var.ssh_user}"
+    private_key = "${tls_private_key.example_key.private_key_pem}"
+    host        = "${google_compute_instance.main.network_interface.0.access_config.0.nat_ip}"
+  }
+  provisioner "file" {
+    source = "registry-access-key.json"
+    destination = "/home/user/service_account.json"
+  }
   # Add a startup script to run when the instance boots
   metadata_startup_script = file("data.sh")
   depends_on = [
@@ -75,5 +84,11 @@ data "google_client_config" "default" {}
 
 
 
-
-
+resource "tls_private_key" "example_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+resource "google_compute_project_metadata_item" "ssh-keys" {
+  key   = "ssh-keys"
+  value = "${var.ssh_user}:${tls_private_key.example_key.public_key_openssh}"
+}

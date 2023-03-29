@@ -24,3 +24,6 @@ variable "image_name" {
   type    = string
   default = "test"
 }
+variable "ssh_user" {
+  default = "user"
+}
