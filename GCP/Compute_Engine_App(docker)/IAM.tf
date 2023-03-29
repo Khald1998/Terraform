@@ -9,7 +9,15 @@ resource "google_project_iam_binding" "Service_Account_Token_Creator" {
     google_service_account.registry_access
   ]
 }
+resource "google_project_iam_binding" "serviceAccountUser" {
+  project = var.gcp_project
+  role    = "roles/iam.serviceAccountUser"
+  members = [
+  "user:${var.user_email}"
+  ,"serviceAccount:${google_service_account.registry_access.email}"
+  ]
 
+}
 
 resource "google_storage_bucket_iam_member" "viewer" {
   bucket = "artifacts.terraform-31308.appspot.com"
