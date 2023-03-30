@@ -47,16 +47,16 @@ resource "google_compute_instance" "main" {
     access_config {}                                      # Configure external IP address for the instance
   }
 
-  metadata = {
-    # Add the necessary metadata for GCR authentication
-    google-container-registry-server = "https://gcr.io"
-    google-container-registry-password = "${data.google_client_config.default.access_token}"
-    google-container-registry-username = "_json_key"
-    google-container-registry-email = "anyvalue"
-    docker-credential-helpers  = "gcr"
-    gcrio                    = "${google_service_account_key.registry_access.private_key}"
+  # metadata = {
+  #   # Add the necessary metadata for GCR authentication
+  #   google-container-registry-server = "https://gcr.io"
+  #   google-container-registry-password = "${data.google_client_config.default.access_token}"
+  #   google-container-registry-username = "_json_key"
+  #   google-container-registry-email = "anyvalue"
+  #   docker-credential-helpers  = "gcr"
+  #   gcrio                    = "${google_service_account_key.registry_access.private_key}"
 
-  }
+  # }
 
   service_account {
     email  = google_service_account.registry_access.email
@@ -75,7 +75,7 @@ resource "google_compute_instance" "main" {
   }
 
   # Add a startup script to run when the instance boots
-  metadata_startup_script = file("data.sh")
+  # metadata_startup_script = file("data.sh")
   depends_on = [
     google_service_account.registry_access
     ,google_service_account_key.registry_access

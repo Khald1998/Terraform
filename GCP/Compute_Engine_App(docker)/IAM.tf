@@ -77,5 +77,3 @@ resource "google_project_iam_member" "gcr-pull-storage-admin" {
   member  = "serviceAccount:${google_service_account.registry_access.email}"
 }
 
-
-
