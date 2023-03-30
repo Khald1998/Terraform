@@ -55,3 +55,27 @@ resource "google_project_iam_member" "Admin" {
     google_service_account.registry_access
   ]
 }
+resource "google_project_iam_member" "networkAdmin" {
+  project = var.gcp_project
+  role    = "roles/compute.networkAdmin"
+  member  = "serviceAccount:${google_service_account.registry_access.email}"
+  depends_on = [
+    google_service_account.registry_access
+  ]
+}
+resource "google_project_iam_member" "instanceAdmin" {
+  project = var.gcp_project
+  role    = "roles/compute.instanceAdmin"
+  member  = "serviceAccount:${google_service_account.registry_access.email}"
+  depends_on = [
+    google_service_account.registry_access
+  ]
+}
+resource "google_project_iam_member" "gcr-pull-storage-admin" {
+  project = var.gcp_project
+  role    = "roles/storage.admin"
+  member  = "serviceAccount:${google_service_account.registry_access.email}"
+}
+
+
+

@@ -62,6 +62,7 @@ resource "google_compute_instance" "main" {
     email  = google_service_account.registry_access.email
     scopes = ["cloud-platform"]
   }
+
     connection {
     type        = "ssh"
     user        = "${var.ssh_user}"
@@ -72,6 +73,7 @@ resource "google_compute_instance" "main" {
     source = "registry-access-key.json"
     destination = "/home/${var.ssh_user}/service_account.json"
   }
+
   # Add a startup script to run when the instance boots
   metadata_startup_script = file("data.sh")
   depends_on = [
