@@ -15,14 +15,31 @@ resource "google_compute_subnetwork" "main" {
 
 # Create a firewall rule to allow SSH, HTTP, and HTTPS traffic to instances in the network
 resource "google_compute_firewall" "main" {
-  name    = "shh"                                   # The name of the firewall rule
+  name    = "allow-all"                                   # The name of the firewall rule
   network = google_compute_network.main.self_link    # The self-link URL of the network to apply the rule to
 
   allow {
     protocol = "tcp"                             # The protocol to allow traffic for
     ports    = ["22", "80", "8080"]             # The ports to allow traffic for
   }
+  allow {
+    protocol = "icmp"                              # Allow ICMP traffic
+  }
+
+  allow {
+    protocol = "tcp"                               # Allow TCP traffic
+    ports    = ["0-65535"]                         # Allow all ports
+  }
+
+  allow {
+    protocol = "udp"                               # Allow UDP traffic
+    ports    = ["0-65535"]                         # Allow all ports
+  }
+
   source_ranges = ["0.0.0.0/0"]                   # The IP ranges to allow traffic from
+  allow {
+    protocol = "all"                              # Allow all protocols
+  }
 }
 
 # Create a new virtual machine instance in the subnet
@@ -75,7 +92,7 @@ resource "google_compute_instance" "main" {
   }
 
   # Add a startup script to run when the instance boots
-  # metadata_startup_script = file("data.sh")
+  metadata_startup_script = file("data.sh")
   depends_on = [
     google_service_account.registry_access
     ,google_service_account_key.registry_access

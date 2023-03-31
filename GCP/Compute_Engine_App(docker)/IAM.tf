@@ -75,5 +75,39 @@ resource "google_project_iam_member" "gcr-pull-storage-admin" {
   project = var.gcp_project
   role    = "roles/storage.admin"
   member  = "serviceAccount:${google_service_account.registry_access.email}"
+  depends_on = [
+    google_service_account.registry_access
+  ]
 }
+resource "google_project_iam_member" "container_registry_viewer" {
+  project = var.gcp_project
+  role    = "roles/containerregistry.ServiceAgent"
+  member  = "serviceAccount:${google_service_account.registry_access.email}"
+  depends_on = [
+    google_service_account.registry_access
+  ]
+}
+resource "google_project_iam_member" "compute_image_user" {
+  project = var.gcp_project
+  role    = "roles/compute.imageUser"
+  member  = "serviceAccount:${google_service_account.registry_access.email}"
+  depends_on = [
+    google_service_account.registry_access
+  ]
+}
+resource "google_project_iam_binding" "compute_engine_service_account" {
+  project = var.gcp_project
+  role    = "roles/storage.objectViewer"
 
+  members = [
+    "serviceAccount:${google_service_account.registry_access.email}",
+  ]
+}
+resource "google_project_iam_binding" "container_registry_service_account" {
+  project = var.gcp_project
+  role    = "roles/containeranalysis.admin"
+
+  members = [
+    "serviceAccount:${google_service_account.registry_access.email}",
+  ]
+}

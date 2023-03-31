@@ -11,3 +11,9 @@ echo \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 apt-get update
 apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+gcloud auth activate-service-account --key-file=/home/alzahrani_khaled_98/service_account.json
+yes | gcloud auth configure-docker
+usermod -a -G docker ${USER}
+cat /home/alzahrani_khaled_98/service_account.json | docker login -u _json_key --password-stdin \
+https://gcr.io
+docker pull gcr.io/terraform-31308/test:1680178822
