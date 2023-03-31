@@ -22,25 +22,20 @@ resource "google_compute_firewall" "main" {
     protocol = "tcp"                             # The protocol to allow traffic for
     ports    = ["22", "80", "8080"]             # The ports to allow traffic for
   }
-  allow {
-    protocol = "icmp"                              # Allow ICMP traffic
-  }
 
-  allow {
-    protocol = "tcp"                               # Allow TCP traffic
-    ports    = ["0-65535"]                         # Allow all ports
-  }
-
-  allow {
-    protocol = "udp"                               # Allow UDP traffic
-    ports    = ["0-65535"]                         # Allow all ports
-  }
 
   source_ranges = ["0.0.0.0/0"]                   # The IP ranges to allow traffic from
-  allow {
-    protocol = "all"                              # Allow all protocols
-  }
+
 }
+
+# data "template_file" "data_script" {
+#   template = file("data.sh")
+#   vars = {
+#     url = docker_image.main.name
+#   }
+# }
+
+
 
 # Create a new virtual machine instance in the subnet
 resource "google_compute_instance" "main" {
@@ -64,16 +59,7 @@ resource "google_compute_instance" "main" {
     access_config {}                                      # Configure external IP address for the instance
   }
 
-  # metadata = {
-  #   # Add the necessary metadata for GCR authentication
-  #   google-container-registry-server = "https://gcr.io"
-  #   google-container-registry-password = "${data.google_client_config.default.access_token}"
-  #   google-container-registry-username = "_json_key"
-  #   google-container-registry-email = "anyvalue"
-  #   docker-credential-helpers  = "gcr"
-  #   gcrio                    = "${google_service_account_key.registry_access.private_key}"
 
-  # }
 
   service_account {
     email  = google_service_account.registry_access.email
@@ -93,6 +79,11 @@ resource "google_compute_instance" "main" {
 
   # Add a startup script to run when the instance boots
   metadata_startup_script = file("data.sh")
+  # metadata_startup_script = templatefile("${path.module}/data.sh", {
+  #   url  = docker_image.main.name
+  # })
+
+  
   depends_on = [
     google_service_account.registry_access
     ,google_service_account_key.registry_access

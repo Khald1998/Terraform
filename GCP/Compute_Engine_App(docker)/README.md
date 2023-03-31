@@ -9,3 +9,12 @@ docker login registry-access@terraform-31308.iam.gserviceaccount.com
 sudo docker pull gcr.io/terraform-31308/test:1680178822
 sudo docker run -d gcr.io/terraform-31308/test:1680258216
 sudo docker run gcr.io/terraform-31308/test:1680258216
+docker run -p 8080:8080 -d --restart always ${url} 
+
+
+
+
+
+
+docker pull ${url}
+docker run ${url}
