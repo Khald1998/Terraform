@@ -206,9 +206,7 @@ resource "null_resource" "main" {
       go build main.go
     EOT
     interpreter = ["PowerShell", "-Command"]
-
   }
-
 }
 
 
