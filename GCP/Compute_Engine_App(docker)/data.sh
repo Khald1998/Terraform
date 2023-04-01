@@ -16,4 +16,4 @@ yes | gcloud auth configure-docker
 cat /home/alzahrani_khaled_98/service_account.json | docker login -u _json_key --password-stdin \
 https://gcr.io
 docker pull ${url}
-docker run -p 8080:8080 ${url}
+docker run -p 8080:8080 ${url} 

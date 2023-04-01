@@ -18,3 +18,4 @@ docker run -p 8080:8080 -d --restart always ${url}
 
 docker pull ${url}
 docker run ${url}
+docker run -p 8080:8080 ${url}

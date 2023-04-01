@@ -28,12 +28,6 @@ resource "google_compute_firewall" "main" {
 
 }
 
-# data "template_file" "data_script" {
-#   template = file("data.sh")
-#   vars = {
-#     url = docker_image.main.name
-#   }
-# }
 
 
 
@@ -55,18 +49,15 @@ resource "google_compute_instance" "main" {
   # Configure the network interface for the instance
   network_interface {
     subnetwork = google_compute_subnetwork.main.self_link  # The self-link URL of the subnet to attach the instance to
-
     access_config {}                                      # Configure external IP address for the instance
   }
-
-
 
   service_account {
     email  = google_service_account.registry_access.email
     scopes = ["cloud-platform"]
   }
 
-    connection {
+  connection {
     type        = "ssh"
     user        = "${var.ssh_user}"
     private_key = "${tls_private_key.example_key.private_key_pem}"
@@ -78,10 +69,10 @@ resource "google_compute_instance" "main" {
   }
 
   # Add a startup script to run when the instance boots
-  metadata_startup_script = file("data.sh")
-  # metadata_startup_script = templatefile("${path.module}/data.sh", {
-  #   url  = docker_image.main.name
-  # })
+  # metadata_startup_script = file("data.sh")
+  metadata_startup_script = templatefile("${path.module}/data.sh", {
+    url  = docker_image.main.name
+  })
 
   
   depends_on = [
@@ -91,8 +82,6 @@ resource "google_compute_instance" "main" {
 }
 
 data "google_client_config" "default" {}
-
-
 
 resource "tls_private_key" "example_key" {
   algorithm = "RSA"
