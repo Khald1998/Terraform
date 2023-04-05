@@ -10,3 +10,9 @@ variable "gcp_project" {
   default     = "terraform-31308"
 }
 
+
+variable "user_email" {
+  type    = string
+  default = "alzahrani.khaled.98@gmail.com"
+}
+

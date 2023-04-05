@@ -3,6 +3,9 @@ terraform {
     google = {
       source = "hashicorp/google"
     }
+    mongodbatlas = {
+      source = "mongodb/mongodbatlas"
+    }
   }
 }
 
@@ -11,3 +14,7 @@ provider "google" {
   project = var.gcp_project
 }
 
+provider "mongodbatlas" {
+  public_key  = "${var.MONGODB_ATLAS_PUBLIC_KEY}"
+  private_key = "${var.MONGODB_ATLAS_PRIVATE_KEY}"
+}
