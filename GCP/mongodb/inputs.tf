@@ -10,9 +10,12 @@ variable "gcp_project" {
   default     = "terraform-31308"
 }
 
-
-variable "user_email" {
+variable "MONGODB_ATLAS_PUBLIC_KEY" {
   type    = string
-  default = "alzahrani.khaled.98@gmail.com"
+  default = "fqucsetn"
+}
+variable "MONGODB_ATLAS_PRIVATE_KEY" {
+  type    = string
+  default = "af9c7d7d-1161-4e04-aeff-3d1a8f00d751"
 }
 
