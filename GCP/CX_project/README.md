@@ -3,6 +3,8 @@ npm install express
 npm install express graphql express-graphql
 node server.js
 
+echo Y | gcloud auth configure-docker us-central1-docker.pkg.dev 
+
 query {
 hello
 }

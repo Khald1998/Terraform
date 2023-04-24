@@ -22,8 +22,11 @@ variable "user_email" {
 
 variable "image_name" {
   type    = string
-  default = "test"
+  default = "app"
 }
 variable "ssh_user" {
   default = "alzahrani_khaled_98"
+}
+variable "repository_name" {
+  default = "my-docker-repository"
 }

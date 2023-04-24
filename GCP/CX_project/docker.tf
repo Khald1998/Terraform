@@ -1,21 +1,21 @@
-resource "time_static" "tag" {}
 
 resource "docker_image" "main" {
-  name = "gcr.io/${var.gcp_project}/${var.image_name}:${time_static.tag.unix}"
+  name = "us-central1-docker.pkg.dev/${var.gcp_project}/${var.repository_name}/${var.image_name}:latest"
   build {
-    context    = "${path.module}/Dockerize_me/."
+    context    = "${path.module}/app/."
     dockerfile = "Dockerfile"
     no_cache   = true
   }
-  depends_on = [
-    google_project_service.gcr_api
-  ]
+
 }
 
 resource "docker_registry_image" "main" {
   name          = docker_image.main.name
   keep_remotely = true
-  depends_on = [
-    google_project_service.gcr_api
-  ]
+
 }
+
+
+
+# docker tag app us-central1-docker.pkg.dev/terraform-31308/my-docker-repository/app:latest
+# docker push us-central1-docker.pkg.dev/terraform-31308/my-docker-repository/app:latest

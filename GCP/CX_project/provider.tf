@@ -16,7 +16,7 @@ provider "google" {
 
 provider "docker" {
   registry_auth {
-    address = "gcr.io"
+    address = "us-central1-docker.pkg.dev"
     config_file = pathexpand("C:/Users/arraa/.docker/config.json")
   }
 }
