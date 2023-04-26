@@ -12,6 +12,7 @@ terraform {
 provider "google" {
   region  = var.gcp_region
   project = var.gcp_project
+  credentials = file("C:/Users/arraa/AppData/Roaming/gcloud/terraform-31308-key.json")
 }
 
 provider "docker" {

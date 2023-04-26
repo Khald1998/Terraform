@@ -22,7 +22,7 @@ variable "user_email" {
 
 variable "image_name" {
   type    = string
-  default = "app"
+  default = "backend"
 }
 variable "ssh_user" {
   default = "alzahrani_khaled_98"

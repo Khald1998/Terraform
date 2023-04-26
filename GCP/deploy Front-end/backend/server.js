@@ -17,10 +17,11 @@ app.use(cors(corsOptions));
 
 
 app.get('/data', async (req, res) => {
+  const randomString = Math.random().toString(36).substring(2, 15);
   const data = {
-    word: 'xffing' // Replace with your desired value
+    word: randomString
   };
-  res.json(data); // Send the JSON response with the data object
+  res.json(data);
 });
 
 app.listen(port, () => {
