@@ -6,13 +6,15 @@ resource "docker_image" "main" {
     dockerfile = "Dockerfile"
     no_cache   = true
   }
-
 }
 
 resource "docker_registry_image" "main" {
   name          = docker_image.main.name
   keep_remotely = true
-
+  depends_on = [
+    docker_image.main
+    ,google_artifact_registry_repository.main
+  ]
 }
 
 

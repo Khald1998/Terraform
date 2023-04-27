@@ -44,3 +44,7 @@ name
 email
 }
 }
+
+
+
+gcloud projects add-iam-policy-binding terraform-31308 --member="serviceAccount:terraform-service-account@terraform-31308.iam.gserviceaccount.com" --role="roles/run.admin"
