@@ -6,10 +6,6 @@ output "image_name" {
   value = docker_image.main.name
 }
 
-
-output "private_key" {
-  value = nonsensitive(base64decode(google_service_account_key.registry_access.private_key))
-}
-output "pass" {
-  value = nonsensitive(data.google_client_config.default.access_token)
+output "google_service_account" {
+  value = google_service_account.registry_access.email
 }

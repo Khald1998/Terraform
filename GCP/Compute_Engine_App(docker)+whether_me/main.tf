@@ -29,11 +29,8 @@ resource "google_compute_firewall" "main" {
 }
 
 
-
-
-# Create a new virtual machine instance in the subnet
 resource "google_compute_instance" "main" {
-  name         = "example-instance"              # The name of the instance
+  name         = "my-api"              # The name of the instance
   machine_type = "n1-standard-1"                 # The machine type to use
   zone         = "us-central1-a"                 # The zone to create the instance in
   allow_stopping_for_update = true
@@ -56,7 +53,6 @@ resource "google_compute_instance" "main" {
     email  = google_service_account.registry_access.email
     scopes = ["cloud-platform"]
   }
-
   connection {
     type        = "ssh"
     user        = "${var.ssh_user}"
@@ -69,19 +65,17 @@ resource "google_compute_instance" "main" {
   }
 
   # Add a startup script to run when the instance boots
-  # metadata_startup_script = file("data.sh")
+
   metadata_startup_script = templatefile("${path.module}/data.sh", {
     url  = docker_image.main.name
+    USER = var.ssh_user
   })
 
-  
-  depends_on = [
+    depends_on = [
     google_service_account.registry_access
-    ,google_service_account_key.registry_access
   ]
 }
 
-data "google_client_config" "default" {}
 
 resource "tls_private_key" "example_key" {
   algorithm = "RSA"
@@ -91,3 +85,4 @@ resource "google_compute_project_metadata_item" "ssh-keys" {
   key   = "ssh-keys"
   value = "${var.ssh_user}:${tls_private_key.example_key.public_key_openssh}"
 }
+

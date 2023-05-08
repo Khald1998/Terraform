@@ -7,7 +7,7 @@ variable "gcp_region" {
 variable "gcp_project" {
   type        = string
   description = "Project to use for this config"
-  default     = "terraform-31308"
+  default     = "terraform-386117"
 }
 
 variable "vpc_name" {
@@ -22,8 +22,11 @@ variable "user_email" {
 
 variable "image_name" {
   type    = string
-  default = "test"
+  default = "weather"
 }
 variable "ssh_user" {
   default = "alzahrani_khaled_98"
+}
+variable "repository_name" {
+  default = "my-docker-repository"
 }

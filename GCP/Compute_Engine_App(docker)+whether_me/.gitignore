@@ -3,3 +3,4 @@
 func.zip
 terraform.tfstate
 terraform.tfstate.backup
+*.json
