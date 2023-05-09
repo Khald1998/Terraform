@@ -7,7 +7,7 @@ resource "google_compute_network" "main" {
 
 # Create a new subnet in the VPC network
 resource "google_compute_subnetwork" "main" {
-  name          = "main-subnet"                   # The name of the subnet
+  name          = var.subnet                  # The name of the subnet
   region        = "us-central1"                   # The region where the subnet will be created
   network       = google_compute_network.main.self_link  # The self-link URL of the parent network
   ip_cidr_range = "10.0.1.0/24"                   # The IP range for the subnet
@@ -15,7 +15,7 @@ resource "google_compute_subnetwork" "main" {
 
 # Create a firewall rule to allow SSH, HTTP, and HTTPS traffic to instances in the network
 resource "google_compute_firewall" "main" {
-  name    = "allow-all"                                   # The name of the firewall rule
+  name    = var.firewall                                  # The name of the firewall rule
   network = google_compute_network.main.self_link    # The self-link URL of the network to apply the rule to
 
   allow {
