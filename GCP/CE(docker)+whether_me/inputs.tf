@@ -12,7 +12,7 @@ variable "gcp_project" {
 
 variable "vpc_name" {
   type    = string
-  default = "main-vpc"
+  default = "main-vpc-2"
 }
 
 variable "user_email" {
@@ -28,5 +28,5 @@ variable "ssh_user" {
   default = "alzahrani_khaled_98"
 }
 variable "repository_name" {
-  default = "my-docker-repository"
+  default = "my-docker-repository-2"
 }

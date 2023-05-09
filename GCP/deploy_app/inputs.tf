@@ -11,5 +11,5 @@ variable "gcp_project" {
 }
 
 variable "repository_name" {
-  default = "my-docker-repository"
+  default = "my-docker-repository-3"
 }
