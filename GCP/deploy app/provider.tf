@@ -12,7 +12,7 @@ terraform {
 provider "google" {
   region  = var.gcp_region
   project = var.gcp_project
-  credentials = "./my-key.json"
+  credentials = "../my-key.json"
 }
 
 provider "docker" {
