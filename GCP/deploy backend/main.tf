@@ -7,10 +7,6 @@ resource "google_artifact_registry_repository" "main" {
 }
 
 
-
-
-
-
 resource "google_cloud_run_v2_service" "main" {
   name     = "cloudrun-service"
   location = "us-central1"
@@ -19,7 +15,6 @@ resource "google_cloud_run_v2_service" "main" {
   template {
       containers {
         image = docker_image.main.name
-        # image = "us-docker.pkg.dev/cloudrun/container/hello"
       }
   }
 
