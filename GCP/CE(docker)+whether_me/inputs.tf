@@ -15,6 +15,10 @@ variable "vpc_name" {
   default = "main-vpc-2"
 }
 
+variable "subnet_name" {
+  type    = string
+  default = "subnet-1"
+}
 variable "user_email" {
   type    = string
   default = "alzahrani.khaled.98@gmail.com"

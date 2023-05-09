@@ -7,7 +7,7 @@ resource "google_compute_network" "main" {
 
 # Create a new subnet in the VPC network
 resource "google_compute_subnetwork" "main" {
-  name          = var.subnet                  # The name of the subnet
+  name          = var.subnet_name                  # The name of the subnet
   region        = "us-central1"                   # The region where the subnet will be created
   network       = google_compute_network.main.self_link  # The self-link URL of the parent network
   ip_cidr_range = "10.0.1.0/24"                   # The IP range for the subnet
@@ -15,7 +15,7 @@ resource "google_compute_subnetwork" "main" {
 
 # Create a firewall rule to allow SSH, HTTP, and HTTPS traffic to instances in the network
 resource "google_compute_firewall" "main" {
-  name    = var.firewall                                  # The name of the firewall rule
+  name    = var.firewall_name                                  # The name of the firewall rule
   network = google_compute_network.main.self_link    # The self-link URL of the network to apply the rule to
 
   allow {
@@ -38,7 +38,7 @@ resource "google_artifact_registry_repository" "main" {
 
 # Create a new virtual machine instance in the subnet
 resource "google_compute_instance" "main" {
-  name         = "my-api"              # The name of the instance
+  name         = var.instance_name             # The name of the instance
   machine_type = "n1-standard-1"                 # The machine type to use
   zone         = "us-central1-a"                 # The zone to create the instance in
   allow_stopping_for_update = true
@@ -61,36 +61,19 @@ resource "google_compute_instance" "main" {
     email  = google_service_account.registry_access.email
     scopes = ["cloud-platform"]
   }
-  connection {
-    type        = "ssh"
-    user        = "${var.ssh_user}"
-    private_key = "${tls_private_key.example_key.private_key_pem}"
-    host        = "${google_compute_instance.main.network_interface.0.access_config.0.nat_ip}"
-  }
-  provisioner "file" {
-    source = "registry-access-key.json"
-    destination = "/home/${var.ssh_user}/service_account.json"
-  }
 
   # Add a startup script to run when the instance boots
 
   metadata_startup_script = templatefile("${path.module}/data.sh", {
     url  = docker_image.main.name
-    USER = var.ssh_user
   })
 
     depends_on = [
     google_service_account.registry_access
+    ,google_artifact_registry_repository.main
+    ,docker_registry_image.main
+
   ]
 }
 
-
-resource "tls_private_key" "example_key" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
-resource "google_compute_project_metadata_item" "ssh-keys" {
-  key   = "ssh-keys"
-  value = "${var.ssh_user}:${tls_private_key.example_key.public_key_openssh}"
-}
 
