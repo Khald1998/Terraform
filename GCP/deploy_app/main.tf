@@ -3,7 +3,6 @@ resource "google_artifact_registry_repository" "main" {
   repository_id = var.repository_name
   description   = "docker repository"
   format        = "DOCKER"
-
 }
 
 resource "google_cloud_run_v2_service" "backend" {

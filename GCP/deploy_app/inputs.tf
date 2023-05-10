@@ -7,7 +7,7 @@ variable "gcp_region" {
 variable "gcp_project" {
   type        = string
   description = "Project to use for this config"
-  default     = "terraform-386115"
+  default     = "terraform-386117"
 }
 
 variable "repository_name" {

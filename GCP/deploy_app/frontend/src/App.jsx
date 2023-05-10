@@ -14,7 +14,6 @@ function App() {
       }) // Update word state with received value
       .catch((error) => console.error(error)); // Handle any errors
   };
-
   return (
     <>
       <div className="text-center m-5">
